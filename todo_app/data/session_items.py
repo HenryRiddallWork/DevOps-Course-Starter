@@ -16,7 +16,7 @@ def get_items():
     return session.get('items', _DEFAULT_ITEMS.copy())
 
 
-def get_item(id):
+def get_item_by_id(id):
     """
     Fetches the saved item with the specified ID.
 

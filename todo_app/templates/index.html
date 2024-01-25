@@ -19,7 +19,7 @@
       <ul class="list-group mb-4">
         {% for item in items %}
         <li class="mb-1">
-          {{ item.title }}
+          <div style="{% if item.status == "Completed" %}text-decoration: line-through;{% endif %}">{{ item.title }}<div>
           <form action="/delete" method="post">
             <button
               type="submit"
@@ -30,6 +30,18 @@
               on
             >
               Delete
+            </button>
+          </form>
+          <form action="/complete" method="post">
+            <button
+              type="submit"
+              name="item_id"
+              value="{{ item.id }}"
+              class="btn btn-success btn-sm"
+              aria-label="complete-{{ item.title }}"
+              on
+            >
+              Complete
             </button>
           </form>
         </li>
