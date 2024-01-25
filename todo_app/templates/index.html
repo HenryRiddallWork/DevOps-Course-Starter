@@ -41,7 +41,11 @@
               aria-label="complete-{{ item.title }}"
               on
             >
+              {% if item.status == "Completed" %}
+              Resume
+              {% else %}
               Complete
+              {% endif %}
             </button>
           </form>
         </li>

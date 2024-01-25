@@ -25,6 +25,6 @@ def remove_todo_item():
 @app.route("/complete", methods=["POST"])
 def comeplete_todo_item():
     current_item = get_item_by_id(request.form.get("item_id"))
-    current_item["status"] = "Completed"
+    current_item["status"] = "Resumed" if current_item["status"] == "Completed" else "Completed"
     save_item(current_item)
     return redirect("/")
