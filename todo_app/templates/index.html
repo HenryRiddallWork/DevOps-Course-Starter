@@ -18,7 +18,21 @@
       <h2>Items</h2>
       <ul class="list-group mb-4">
         {% for item in items %}
-        <li>{{ item.title }}</li>
+        <li class="mb-1">
+          {{ item.title }}
+          <form action="/delete" method="post">
+            <button
+              type="submit"
+              name="item_id"
+              value="{{ item.id }}"
+              class="btn btn-danger btn-sm"
+              aria-label="delete-{{ item.title }}"
+              on
+            >
+              Delete
+            </button>
+          </form>
+        </li>
         {% endfor %}
       </ul>
     </div>
