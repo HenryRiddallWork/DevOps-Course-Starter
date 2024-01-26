@@ -16,7 +16,7 @@ def get_items():
     return session.get('items', _DEFAULT_ITEMS.copy())
 
 
-def get_item(id):
+def get_item_by_id(id):
     """
     Fetches the saved item with the specified ID.
 
@@ -67,3 +67,17 @@ def save_item(item):
     session['items'] = updated_items
 
     return item
+
+def remove_item_by_id(item_id):
+    """
+    Remove an existing item in the session. If no existing item matches the ID of the specified item, nothing is removed.
+
+    Args:
+        item: The item to remove.
+    """
+    existing_items = get_items()
+    updated_items = [existing_item for existing_item in existing_items if int(item_id) != int(existing_item['id'])]
+
+    session['items'] = updated_items
+
+    return item_id
