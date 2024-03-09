@@ -24,7 +24,7 @@ class TrelloRepository:
         self.board_url = f'https://api.trello.com/1/boards/{self.board_id}'
         self.lists_cache = {}
         
-        self.default_list = self.get_or_create_list_by_name(os.getenv('TRELLO_DEFAULT_LIST'))
+        self.default_list = self.get_or_create_list_by_name('ToDo')
 
     def refresh_lists_cache(self):
         response = requests.get(f'{self.board_url}/lists', params=self.base_query_params)
