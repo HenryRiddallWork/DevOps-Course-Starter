@@ -6,6 +6,33 @@
 
 The project uses poetry for Python to create an isolated environment and manage package dependencies. To prepare your system, ensure you have an official distribution of Python version 3.8+ and install Poetry using one of the following commands (as instructed by the [poetry documentation](https://python-poetry.org/docs/#system-requirements)):
 
+For styling tailwindcss is used via their CLI tool. For this to work you must also have Node installed.
+
+### VSCode
+
+It is reccomended to use VSCode for this project as there is an included launch config and linting has so far been enforced using VSCode extensions. The reccomended linting extensions are:
+
+- Better Jinja
+- Black Formatter
+- Mypy
+- Prettier (You will also need the NPM package, installation details described in the style section)
+
+However none of these styles are enforced yet so go wild I guess.
+
+You may also want to install other extensions to make development easier such as Pylance and Tailwind CSS IntelliSense (this extension is especially helpul if you are new to tailwind).
+
+### Styles
+
+- Install the latest version of Node from: https://nodejs.org/en
+- Install the dependancies using `npm install`
+- To keep the css build updated run the cli tool with the following command (--watch will watch for file changes in the project regenerate the CSS when neccisary):
+
+```
+npx tailwindcss -i ./todo_app/tailwind.css -o ./todo_app/static/css/index.css --watch
+```
+
+Note: the website will not have any styles if you do not run the above as the generated CSS file is in the .gitignore.
+
 ### Poetry installation (Bash)
 
 ```bash
@@ -43,11 +70,13 @@ You must also populate the TRELLO_XXXXX variables with your own API key, token a
 ## Running the App
 
 Once the all dependencies have been installed, start the Flask app in development mode within the Poetry environment by running:
+
 ```bash
 $ poetry run flask run
 ```
 
 You should see output similar to the following:
+
 ```bash
  * Serving Flask app 'todo_app/app'
  * Debug mode: on
@@ -58,4 +87,5 @@ Press CTRL+C to quit
  * Debugger is active!
  * Debugger PIN: 113-666-066
 ```
+
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.

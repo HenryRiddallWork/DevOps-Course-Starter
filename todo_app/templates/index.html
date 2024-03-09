@@ -1,38 +1,48 @@
-{% extends "layout.html" %}
-{% block title %}
-To-Do App
-{% endblock title %}
-{% block content %}
+{% extends "layout.html" %} {% block title %} To-Do App {% endblock title %} {%
+block content %}
 <h1>To-Do App</h1>
 <p>Just another to-do app.</p>
 <h2>Items</h2>
 <ul>
-    {% for item in items %}
-    <li>
-        <div style="
-            {% if item.is_complete %}
-                      text-decoration:line-through;
-            {% endif %}">
-            {{ item.title }}
-        </div>
-        <form action="{{ url_for('remove_todo_item') }}" method="post">
-            <button type="submit" name="item_id" value="{{ item.id }}" aria-label="delete-{{ item.title }}"
-                on>X</button>
-        </form>
-        <form action="{{ url_for('comeplete_todo_item') }}" method="post">
-            <button type="submit" name="item_id" value="{{ item.id }}" aria-label="complete-{{ item.title }}" on>
+  {% for item in items %}
+  <li>
+    <div
+      class="bg-red-200 bg-slate-600"
+      style="
                 {% if item.is_complete %}
-                Resume
-                {% else %}
-                Complete
-                {% endif %}
-            </button>
-        </form>
-    </li>
-    {% endfor %}
+                        text-decoration:line-through;
+                {% endif %}"
+    >
+      {{ item.title }}
+    </div>
+    <form action="{{ url_for('remove_todo_item') }}" method="post">
+      <button
+        type="submit"
+        name="item_id"
+        value="{{ item.id }}"
+        aria-label="delete-{{ item.title }}"
+        on
+      >
+        X
+      </button>
+    </form>
+    <form action="{{ url_for('comeplete_todo_item') }}" method="post">
+      <button
+        type="submit"
+        name="item_id"
+        value="{{ item.id }}"
+        aria-label="complete-{{ item.title }}"
+        on
+      >
+        {% if item.is_complete %} Resume {% else %} Complete {%
+        endif %}
+      </button>
+    </form>
+  </li>
+  {% endfor %}
 </ul>
 <form action="" method="post">
-    <input placeholder="New Item" type="text" id="title" name="title" required>
-    <button type="submit">Add</button>
+  <input placeholder="New Item" type="text" id="title" name="title" required />
+  <button type="submit">Add</button>
 </form>
 {% endblock content %}

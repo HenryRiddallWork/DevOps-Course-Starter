@@ -1,26 +1,25 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="Just another To Do App" />
+    <meta name="keywords" content="To Do ToDo App" />
+    <title>{% block title %} To-Do App {% endblock title %}</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/index.css') }}"
+    />
+  </head>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Just another To Do App">
-    <meta name="keywords" content="To Do ToDo App">
-    <title>
-        {% block title %}
-        To-Do App
-        {% endblock title %}
-    </title>
-</head>
-
-<body>
-    <nav>
-        <a href="#">To-Do App</a>
+  <body>
+    <nav class="">
+      <a href="#">To-Do App</a>
     </nav>
-    <div>
-        {% block content %}
-        {% endblock content %}
-    </div>
-</body>
-
+    <div>{% block content %} {% endblock content %}</div>
+  </body>
 </html>

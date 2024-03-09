@@ -10,7 +10,7 @@ from todo_app.data.trello_items_service import (
 
 from todo_app.flask_config import Config
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="/static")
 app.config.from_object(Config())
 
 
