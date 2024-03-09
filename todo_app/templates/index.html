@@ -14,7 +14,7 @@
         <li class="list-group-item">
           <div class="container">
             <div class="row">
-              <div class="col-md-9" style="{% if item.status == "Done" %}text-decoration: line-through;{% endif %}">{{ item.title }}</div>
+              <div class="col-md-9" style="{% if item.status == Status.Completed %}text-decoration: line-through;{% endif %}">{{ item.title }}</div>
               <div class="col-md-1">
                 <form action="/delete" method="post">
                   <button
@@ -39,7 +39,7 @@
                     aria-label="complete-{{ item.title }}"
                     on
                   >
-                    {% if item.status == "Done" %}
+                    {% if item.status == Status.Completed %}
                     Resume
                     {% else %}
                     Complete

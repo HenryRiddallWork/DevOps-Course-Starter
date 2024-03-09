@@ -4,6 +4,7 @@ from todo_app.data.trello_repository import TrelloRepository, TrelloCard
 
 trello_repository = TrelloRepository()
 
+
 def map_card_to_item(card: TrelloCard) -> Item:
     """
     Converts a trello card into an item supported by the ToDo app.
@@ -15,8 +16,9 @@ def map_card_to_item(card: TrelloCard) -> Item:
         item: The trello card as a ToDo item
     """
     trello_list = trello_repository.get_list_by_id(card.idList)
-    item =  Item.from_trello_card(card, trello_list)
+    item = Item.from_trello_card(card, trello_list)
     return item
+
 
 def map_item_to_card(item: Item) -> TrelloCard:
     """
@@ -27,14 +29,11 @@ def map_item_to_card(item: Item) -> TrelloCard:
     Returns:
         item: The trello card
     """
-    trello_list = trello_repository.get_or_create_list_by_name(item.status)
-    card =  TrelloCard(
-        item.id,
-        item.title,
-        trello_list.id
-    )
+    trello_list = trello_repository.get_or_create_list_by_name(item.status.value)
+    card = TrelloCard(item.id, item.title, trello_list.id)
     return card
-    
+
+
 def get_items() -> list[Item]:
     """
     Fetches all saved items.
@@ -69,7 +68,6 @@ def add_item(title):
         item: The saved item.
     """
     # Add the item to the list
-    
 
     return trello_repository.add_card(title)
 
@@ -82,6 +80,7 @@ def save_item(item: Item):
         item: The item to save.
     """
     return trello_repository.update_card(map_item_to_card(item))
+
 
 def remove_item_by_id(item_id):
     """
