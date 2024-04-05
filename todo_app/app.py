@@ -9,6 +9,7 @@ from todo_app.data.trello_items_service import (
 )
 
 from todo_app.flask_config import Config
+from todo_app.templates.index.index import IndexModel
 
 app = Flask(__name__, static_url_path="/static")
 app.config.from_object(Config())
@@ -18,7 +19,8 @@ app.config.from_object(Config())
 def index():
     items = get_items()
     sorted_items = sorted(items, key=lambda item: item.id)
-    return render_template("index.html", items=sorted_items)
+    item_view_model = IndexModel(sorted_items)
+    return render_template("/index/index.html", view_model=item_view_model)
 
 
 @app.route("/", methods=["POST"])
