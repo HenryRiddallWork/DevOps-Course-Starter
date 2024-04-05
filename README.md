@@ -24,8 +24,8 @@ You may also want to install other extensions to make development easier such as
 ### Styles
 
 - Install the latest version of Node from: https://nodejs.org/en
-- Install the dependancies using `npm install`
-- To keep the css build updated run the cli tool with the following command (--watch will watch for file changes in the project regenerate the CSS when neccisary):
+- Install the dependencies using `npm install`
+- To keep the css build updated run the cli tool with the following command (--watch will watch for file changes in the project regenerate the CSS when necessary):
 
 ```
 npx tailwindcss -i ./todo_app/tailwind.css -o ./todo_app/static/css/index.css --watch
