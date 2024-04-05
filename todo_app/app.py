@@ -9,7 +9,7 @@ from todo_app.data.trello_items_service import (
 )
 
 from todo_app.flask_config import Config
-from todo_app.templates.index.index import IndexModel
+from todo_app.templates.index.index_model import IndexModel
 
 app = Flask(__name__, static_url_path="/static")
 app.config.from_object(Config())
