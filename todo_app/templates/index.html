@@ -1,69 +1,76 @@
-{% extends "layout.html" %}
-{% block title %}To-Do App{% endblock %}
-
-{% block content %}
-  <div class="jumbotron">
-    <h1 class="display-4">To-Do App</h1>
-    <p class="lead">Just another to-do app.</p>
-  </div>
-  <div class="row justify-content-md-center">
-    <div class="col-md-6">
-      <h2>Items</h2>
-      <ul class="list-group mb-4">
-        {% for item in items %}
-        <li class="list-group-item">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-9" style="{% if item.status == "Completed" %}text-decoration: line-through;{% endif %}">{{ item.title }}</div>
-              <div class="col-md-1">
-                <form action="/delete" method="post">
-                  <button
-                    type="submit"
-                    name="item_id"
-                    value="{{ item.id }}"
-                    class="btn btn-danger btn-sm mr-1"
-                    aria-label="delete-{{ item.title }}"
-                    on
-                  >
-                    X
-                  </button>
-                </form>
-              </div>
-              <div class="col-md-2">
-                <form action="/complete" method="post">
-                  <button
-                    type="submit"
-                    name="item_id"
-                    value="{{ item.id }}"
-                    class="btn btn-success btn-sm"
-                    aria-label="complete-{{ item.title }}"
-                    on
-                  >
-                    {% if item.status == "Completed" %}
-                    Resume
-                    {% else %}
-                    Complete
-                    {% endif %}
-                  </button>
-                </form>
-              </div>
+{% extends "layout.html" %} {% block title %}To-Do App{% endblock %} {% block
+content %}
+<div class="jumbotron">
+  <h1 class="display-4">To-Do App</h1>
+  <p class="lead">Just another to-do app.</p>
+</div>
+<div class="row justify-content-md-center">
+  <div class="col-md-6">
+    <h2>Items</h2>
+    <ul class="list-group mb-4">
+      {% for item in items %}
+      <li class="list-group-item">
+        <div class="container">
+          <div class="row">
+            <div
+              class="col-md-9"
+              style="{% if item.is_complete %}text-decoration: line-through;{% endif %}"
+            >
+              {{ item.title }}
+            </div>
+            <div class="col-md-1">
+              <form action="/delete" method="post">
+                <button
+                  type="submit"
+                  name="item_id"
+                  value="{{ item.id }}"
+                  class="btn btn-danger btn-sm mr-1"
+                  aria-label="delete-{{ item.title }}"
+                  on
+                >
+                  X
+                </button>
+              </form>
+            </div>
+            <div class="col-md-2">
+              <form action="/complete" method="post">
+                <button
+                  type="submit"
+                  name="item_id"
+                  value="{{ item.id }}"
+                  class="btn btn-success btn-sm"
+                  aria-label="complete-{{ item.title }}"
+                  on
+                >
+                  {% if item.is_complete %} Resume {% else %} Complete {% endif
+                  %}
+                </button>
+              </form>
             </div>
           </div>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-  <div class="row justify-content-md-center">
-    <div class="col-md-6">
-      <form action="" method="post">
-        <div class="input-group">
-          <input placeholder="New Item" type="text" class="form-control" id="title" name="title" required>
-          <div class="input-group-append">
-            <button type="submit" class="btn btn-primary">Add</button>
-          </div>
         </div>
-      </form>
-    </div>
+      </li>
+      {% endfor %}
+    </ul>
   </div>
+</div>
+<div class="row justify-content-md-center">
+  <div class="col-md-6">
+    <form action="" method="post">
+      <div class="input-group">
+        <input
+          placeholder="New Item"
+          type="text"
+          class="form-control"
+          id="title"
+          name="title"
+          required
+        />
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}
