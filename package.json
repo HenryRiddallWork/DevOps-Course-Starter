@@ -1,7 +1,14 @@
 {
+  "scripts": {
+    "css": "npx tailwindcss -i ./todo_app/tailwind.css -o ./todo_app/static/css/index.css --watch",
+    "dev": "concurrently \"npm run css\" \"poetry run flask run\""
+  },
   "devDependencies": {
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.12",
     "tailwindcss": "^3.4.1"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
   }
 }

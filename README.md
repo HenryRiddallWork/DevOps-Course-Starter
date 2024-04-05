@@ -21,17 +21,12 @@ However none of these styles are enforced yet so go wild I guess.
 
 You may also want to install other extensions to make development easier such as Pylance and Tailwind CSS IntelliSense (this extension is especially helpul if you are new to tailwind).
 
-### Styles
+### Node installation
+
+Node is required for the development of this app so you will need to install Node and the project dependencies. However, the site is primarily built using Python with Flask, so think very carefully before adding any packages.
 
 - Install the latest version of Node from: https://nodejs.org/en
 - Install the dependencies using `npm install`
-- To keep the css build updated run the cli tool with the following command (--watch will watch for file changes in the project regenerate the CSS when necessary):
-
-```
-npx tailwindcss -i ./todo_app/tailwind.css -o ./todo_app/static/css/index.css --watch
-```
-
-Note: the website will not have any styles if you do not run the above as the generated CSS file is in the .gitignore.
 
 ### Poetry installation (Bash)
 
@@ -72,20 +67,33 @@ You must also populate the TRELLO_XXXXX variables with your own API key, token a
 Once the all dependencies have been installed, start the Flask app in development mode within the Poetry environment by running:
 
 ```bash
-$ poetry run flask run
+$ npm run dev
 ```
 
 You should see output similar to the following:
 
 ```bash
- * Serving Flask app 'todo_app/app'
- * Debug mode: on
-WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
- * Running on http://127.0.0.1:5000
-Press CTRL+C to quit
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 113-666-066
+$> dev
+$> concurrently "npm run css" "poetry run flask run"
+$[0]
+$[0] > css
+$[0] > npx tailwindcss -i ./todo_app/tailwind.css -o ./todo_app/static/css/index.css --watch
+$[0]
+$[1]  * Serving Flask app 'todo_app/app'
+$[1]  * Debug mode: on
+$[1] WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+$[1]  * Running on http://127.0.0.1:5000
+$[1] Press CTRL+C to quit
+$[1]  * Restarting with stat
+$[0]
+$[0] Rebuilding...
+$[0]
+$[0] Done in 306ms.
+$[1]  * Debugger is active!
+$[1]  * Debugger PIN: 207-877-058
+$[1] 127.0.0.1 - - [05/Apr/2024 16:49:39] "GET / HTTP/1.1" 200 -
+$[1] 127.0.0.1 - - [05/Apr/2024 16:49:39] "GET /static/css/custom.css HTTP/1.1" 304 -
+$[1] 127.0.0.1 - - [05/Apr/2024 16:49:39] "GET /static/css/index.css HTTP/1.1" 200 -
 ```
 
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
