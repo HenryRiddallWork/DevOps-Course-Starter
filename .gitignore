@@ -118,3 +118,9 @@ env/
 
 ### Configuration files ###
 .env
+
+### NPM things ###
+node_modules/
+
+### Tailwin Generated CSS ###
+todo_app/static/css/index.css

@@ -1,76 +1,78 @@
-{% extends "layout.html" %} {% block title %}To-Do App{% endblock %} {% block
-content %}
-<div class="jumbotron">
-  <h1 class="display-4">To-Do App</h1>
-  <p class="lead">Just another to-do app.</p>
-</div>
-<div class="row justify-content-md-center">
-  <div class="col-md-6">
-    <h2>Items</h2>
-    <ul class="list-group mb-4">
+{% extends "layout.html" %} {% block title %} To-Do App {% endblock title %} {%
+block content %}
+<div class="my-5 rounded bg-slate-50 shadow">
+  <h1 class="rounded-t bg-slate-800 p-5 text-xl font-semibold text-gray-100">
+    List of the things what you need to do!
+  </h1>
+  <div class="p-5">
+    <form action="" method="post" class="mb-5">
+      <input
+        class="rounded border border-slate-800 p-2 focus:outline-none focus:ring-2"
+        placeholder="New Item"
+        type="text"
+        id="title"
+        name="title"
+        required
+      />
+      <button
+        class="rounded bg-emerald-800 px-4 py-2 text-white duration-100 ease-linear hover:bg-emerald-600"
+        type="submit"
+      >
+        Add
+      </button>
+    </form>
+    <div class="flex flex-wrap justify-center gap-3">
       {% for item in items %}
-      <li class="list-group-item">
-        <div class="container">
-          <div class="row">
-            <div
-              class="col-md-9"
-              style="{% if item.is_complete %}text-decoration: line-through;{% endif %}"
+      <div
+        style="--animation-order: {{loop.index}};"
+        class="nthDelay animate-jump relative flex min-h-32 w-48 flex-col rounded bg-slate-300 shadow-lg"
+      >
+        <div class="flex justify-end gap-2 rounded-t bg-slate-800 px-2 py-2">
+          <form
+            class="flex items-center justify-center"
+            action="{{ url_for('comeplete_todo_item') }}"
+            method="post"
+          >
+            <button
+              class="{% if item.is_complete %}bg-yellow-600{% else %}bg-emerald-600{% endif %} size-5 rounded font-mono text-sm font-bold text-white transition-all duration-200 ease-in-out hover:scale-125"
+              type="submit"
+              name="item_id"
+              value="{{ item.id }}"
+              aria-label="complete-{{ item.title }}"
+              on
             >
-              {{ item.title }}
-            </div>
-            <div class="col-md-1">
-              <form action="/delete" method="post">
-                <button
-                  type="submit"
-                  name="item_id"
-                  value="{{ item.id }}"
-                  class="btn btn-danger btn-sm mr-1"
-                  aria-label="delete-{{ item.title }}"
-                  on
-                >
-                  X
-                </button>
-              </form>
-            </div>
-            <div class="col-md-2">
-              <form action="/complete" method="post">
-                <button
-                  type="submit"
-                  name="item_id"
-                  value="{{ item.id }}"
-                  class="btn btn-success btn-sm"
-                  aria-label="complete-{{ item.title }}"
-                  on
-                >
-                  {% if item.is_complete %} Resume {% else %} Complete {% endif
-                  %}
-                </button>
-              </form>
-            </div>
-          </div>
+              {% if item.is_complete %} > {% else %} ✓ {% endif %}
+            </button>
+          </form>
+          <form
+            class="flex items-center justify-center"
+            action="{{ url_for('remove_todo_item') }}"
+            method="post"
+          >
+            <button
+              class="size-5 rounded bg-red-600 font-mono text-sm font-bold text-white transition-all duration-200 ease-in-out hover:scale-125"
+              type="submit"
+              name="item_id"
+              value="{{ item.id }}"
+              aria-label="delete-{{ item.title }}"
+              on
+            >
+              X
+            </button>
+          </form>
         </div>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
-</div>
-<div class="row justify-content-md-center">
-  <div class="col-md-6">
-    <form action="" method="post">
-      <div class="input-group">
-        <input
-          placeholder="New Item"
-          type="text"
-          class="form-control"
-          id="title"
-          name="title"
-          required
-        />
-        <div class="input-group-append">
-          <button type="submit" class="btn btn-primary">Add</button>
+        <div
+          class="mr-auto flex h-full min-h-0 w-full min-w-0 justify-center overflow-hidden overflow-ellipsis p-2 text-center"
+          style="
+                {% if item.is_complete %}
+                        text-decoration:line-through;
+                {% endif %}"
+        >
+          {{ item.title }}
         </div>
       </div>
-    </form>
+      {% endfor %}
+    </div>
   </div>
 </div>
-{% endblock %}
+{% endblock content %}

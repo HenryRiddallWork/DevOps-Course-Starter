@@ -10,14 +10,15 @@ from todo_app.data.trello_items_service import (
 
 from todo_app.flask_config import Config
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="/static")
 app.config.from_object(Config())
 
 
 @app.route("/")
 def index():
     items = get_items()
-    return render_template("index.html", items=items)
+    sorted_items = sorted(items, key=lambda item: item.id)
+    return render_template("index.html", items=sorted_items)
 
 
 @app.route("/", methods=["POST"])
