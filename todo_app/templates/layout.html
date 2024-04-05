@@ -21,10 +21,15 @@
     />
   </head>
 
-  <body>
-    <nav class="">
-      <a href="#">To-Do App</a>
+  <body class="bg-gray-300">
+    <div class="translate-x-0"></div>
+    <nav
+      class="flex h-12 items-center bg-emerald-800 px-5 font-medium text-slate-200 shadow-lg"
+    >
+      <a class="hover:animate-spin" href="#">To-Do App</a>
     </nav>
-    <div>{% block content %} {% endblock content %}</div>
+    <div class="sm:mx-24 md:mx-32 lg:mx-48 xl:mx-64 2xl:mx-72">
+      {% block content %} {% endblock content %}
+    </div>
   </body>
 </html>

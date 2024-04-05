@@ -1,48 +1,76 @@
 {% extends "layout.html" %} {% block title %} To-Do App {% endblock title %} {%
 block content %}
-<h1>To-Do App</h1>
-<p>Just another to-do app.</p>
-<h2>Items</h2>
-<ul>
-  {% for item in items %}
-  <li>
-    <div
-      class="bg-red-200 bg-slate-600"
-      style="
+<div class="my-5 rounded bg-slate-50 shadow">
+  <h1 class="rounded-t bg-slate-800 p-5 text-xl font-semibold text-gray-100">
+    List of the things what you need to do!
+  </h1>
+  <div class="p-5">
+    <form action="" method="post" class="mb-5">
+      <input
+        class="rounded border border-slate-800 p-2 focus:outline-none focus:ring-2"
+        placeholder="New Item"
+        type="text"
+        id="title"
+        name="title"
+        required
+      />
+      <button
+        class="rounded bg-emerald-800 px-4 py-2 text-white duration-100 ease-linear hover:bg-emerald-600"
+        type="submit"
+      >
+        Add
+      </button>
+    </form>
+    <div class="flex flex-wrap justify-center gap-3">
+      {% for item in items %}
+      <div
+        style="--animation-order: {{loop.index}};"
+        class="nthDelay animate-jump relative h-24 w-48 rounded bg-slate-300 p-3 shadow-lg"
+      >
+        <div
+          class="mr-auto flex h-full min-h-0 w-full min-w-0 items-center justify-center overflow-hidden overflow-ellipsis text-center"
+          style="
                 {% if item.is_complete %}
                         text-decoration:line-through;
                 {% endif %}"
-    >
-      {{ item.title }}
+        >
+          {{ item.title }}
+        </div>
+        <form
+          class="absolute right-8 top-1"
+          action="{{ url_for('comeplete_todo_item') }}"
+          method="post"
+        >
+          <button
+            class="{% if item.is_complete %}bg-yellow-600{% else %}bg-green-600{% endif %} size-5 rounded font-mono text-sm font-bold text-white transition-all duration-200 ease-in-out hover:scale-125"
+            type="submit"
+            name="item_id"
+            value="{{ item.id }}"
+            aria-label="complete-{{ item.title }}"
+            on
+          >
+            {% if item.is_complete %} > {% else %} ✓ {% endif %}
+          </button>
+        </form>
+        <form
+          class="absolute right-2 top-1"
+          action="{{ url_for('remove_todo_item') }}"
+          method="post"
+        >
+          <button
+            class="size-5 rounded bg-red-600 font-mono text-sm font-bold text-white transition-all duration-200 ease-in-out hover:scale-125"
+            type="submit"
+            name="item_id"
+            value="{{ item.id }}"
+            aria-label="delete-{{ item.title }}"
+            on
+          >
+            X
+          </button>
+        </form>
+      </div>
+      {% endfor %}
     </div>
-    <form action="{{ url_for('remove_todo_item') }}" method="post">
-      <button
-        type="submit"
-        name="item_id"
-        value="{{ item.id }}"
-        aria-label="delete-{{ item.title }}"
-        on
-      >
-        X
-      </button>
-    </form>
-    <form action="{{ url_for('comeplete_todo_item') }}" method="post">
-      <button
-        type="submit"
-        name="item_id"
-        value="{{ item.id }}"
-        aria-label="complete-{{ item.title }}"
-        on
-      >
-        {% if item.is_complete %} Resume {% else %} Complete {%
-        endif %}
-      </button>
-    </form>
-  </li>
-  {% endfor %}
-</ul>
-<form action="" method="post">
-  <input placeholder="New Item" type="text" id="title" name="title" required />
-  <button type="submit">Add</button>
-</form>
+  </div>
+</div>
 {% endblock content %}
