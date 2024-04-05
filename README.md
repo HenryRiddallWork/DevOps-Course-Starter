@@ -10,7 +10,7 @@ For styling tailwindcss is used via their CLI tool. For this to work you must al
 
 ### VSCode
 
-It is reccomended to use VSCode for this project as there is an included launch config and linting has so far been enforced using VSCode extensions. The reccomended linting extensions are:
+It is recommended to use VSCode for this project as there is an included launch config and linting has so far been enforced using VSCode extensions. The recommended linting extensions are:
 
 - Better Jinja
 - Black Formatter
