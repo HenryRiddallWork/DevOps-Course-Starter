@@ -1,8 +1,8 @@
 import requests
 import os
 
-from todo_app.data.models.item import Status
-from todo_app.data.models.trello_objects import TrelloList, TrelloCard
+from todo_app.data.models.item import Item, Status
+from todo_app.data.models.trello_objects import TrelloList
 
 
 class TrelloRepository:
@@ -59,16 +59,20 @@ class TrelloRepository:
 
         return next((list for list in self.lists_cache.values() if list.name == name))
 
-    def get_board_cards(self) -> list[TrelloCard]:
+    def get_board_items(self) -> list[Item]:
         response = requests.get(
             f"{self.board_url}/cards", params=self.base_query_params
         )
         return [
-            TrelloCard(api_card["id"], api_card["name"], api_card["idList"])
+            Item(
+                api_card["id"],
+                api_card["name"],
+                Status(self.get_list_by_id(api_card["idList"]).name),
+            )
             for api_card in response.json()
         ]
 
-    def add_card(self, title):
+    def add_item(self, title):
         response = requests.post(
             "https://api.trello.com/1/cards",
             headers=self.headers,
@@ -81,32 +85,36 @@ class TrelloRepository:
 
         return response
 
-    def update_card(self, card: TrelloCard):
+    def update_item(self, item: Item):
         response = requests.put(
-            f"https://api.trello.com/1/cards/{card.id}",
+            f"https://api.trello.com/1/cards/{item.id}",
             headers=self.headers,
             params={
                 **self.base_query_params,
-                "idList": card.idList,
-                "name": card.name,
+                "idList": self.get_or_create_list_by_name(str(item.status)),
+                "name": item.title,
             },
         )
         return response
 
-    def remove_card(self, cardId):
+    def remove_item(self, itemId):
         response = requests.delete(
-            f"https://api.trello.com/1/cards/{cardId}",
+            f"https://api.trello.com/1/cards/{itemId}",
             headers=self.headers,
             params=self.base_query_params,
         )
 
         return response
 
-    def get_card(self, cardId) -> TrelloCard:
+    def get_item(self, itemId) -> Item:
         response = requests.get(
-            f"https://api.trello.com/1/cards/{cardId}",
+            f"https://api.trello.com/1/cards/{itemId}",
             headers=self.headers,
             params=self.base_query_params,
         )
         api_card = response.json()
-        return TrelloCard(api_card["id"], api_card["name"], api_card["idList"])
+        return Item(
+            api_card["id"],
+            api_card["name"],
+            Status(self.get_list_by_id(["idList"]).name),
+        )

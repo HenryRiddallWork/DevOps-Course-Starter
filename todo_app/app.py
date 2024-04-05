@@ -14,11 +14,6 @@ app = Flask(__name__)
 app.config.from_object(Config())
 
 
-@app.context_processor
-def inject_status_enum():
-    return dict(Status=Status)
-
-
 @app.route("/")
 def index():
     items = get_items()

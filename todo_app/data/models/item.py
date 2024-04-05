@@ -1,5 +1,5 @@
 from enum import Enum
-from todo_app.data.models.trello_objects import TrelloCard, TrelloList
+from todo_app.data.models.trello_objects import TrelloList
 
 
 class Status(Enum):
@@ -15,11 +15,11 @@ class Item:
         self.title = title
         self.status = status
 
-    @classmethod
-    def from_trello_card(cls, card: TrelloCard, list: TrelloList):
-        return cls(card.id, card.name, Status[list.name])
-
     def get_status_value(self):
         return self.status.value
 
     status_value = property(get_status_value)
+
+    @property
+    def is_complete(self):
+        return self.status == Status.Completed
