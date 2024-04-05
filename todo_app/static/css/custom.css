@@ -1,0 +1,3 @@
+.nthDelay:nth-child(n) {
+  animation-delay: calc(var(--animation-order) * 100ms);
+}
