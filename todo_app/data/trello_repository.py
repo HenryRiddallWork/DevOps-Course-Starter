@@ -91,7 +91,7 @@ class TrelloRepository:
             headers=self.headers,
             params={
                 **self.base_query_params,
-                "idList": self.get_or_create_list_by_name(str(item.status)),
+                "idList": self.get_or_create_list_by_name(item.status.value).id,
                 "name": item.title,
             },
         )
@@ -116,5 +116,5 @@ class TrelloRepository:
         return Item(
             api_card["id"],
             api_card["name"],
-            Status(self.get_list_by_id(["idList"]).name),
+            Status(self.get_list_by_id(api_card["idList"]).name),
         )
