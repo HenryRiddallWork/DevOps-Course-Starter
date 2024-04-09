@@ -1,5 +1,5 @@
 from todo_app.data.models.item import Item, Status
-from todo_app.templates.index.index_model import IndexModel
+from todo_app.models.index_model import IndexModel
 
 
 def test_completed_items_property_contains_exactly_the_completed_items():
