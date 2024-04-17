@@ -2,60 +2,58 @@ from todo_app.data.models.item import Item
 
 from todo_app.data.trello_repository import TrelloRepository
 
-trello_repository = TrelloRepository()
 
+class TrelloItemsService:
+    def __init__(self):
+        self.trello_repository = TrelloRepository()
 
-def get_items() -> list[Item]:
-    """
-    Fetches all saved items.
+    def get_items(self) -> list[Item]:
+        """
+        Fetches all saved items.
 
-    Returns:
-        list: The list of saved items.
-    """
-    return trello_repository.get_board_items()
+        Returns:
+            list: The list of saved items.
+        """
+        return self.trello_repository.get_board_items()
 
+    def get_item_by_id(self, id) -> Item:
+        """
+        Fetches the saved item with the specified ID.
 
-def get_item_by_id(id) -> Item:
-    """
-    Fetches the saved item with the specified ID.
+        Args:
+            id: The ID of the item.
 
-    Args:
-        id: The ID of the item.
+        Returns:
+            item: The saved item, or None if no items match the specified ID.
+        """
+        return self.trello_repository.get_item(id)
 
-    Returns:
-        item: The saved item, or None if no items match the specified ID.
-    """
-    return trello_repository.get_item(id)
+    def add_item(self, title):
+        """
+        Adds a new item with the specified title.
 
+        Args:
+            title: The title of the item.
 
-def add_item(title):
-    """
-    Adds a new item with the specified title.
+        Returns:
+            item: The saved item.
+        """
+        return self.trello_repository.add_item(title)
 
-    Args:
-        title: The title of the item.
+    def save_item(self, item: Item):
+        """
+        Updates an existing item. If no existing item matches the ID of the specified item, nothing is saved.
 
-    Returns:
-        item: The saved item.
-    """
-    return trello_repository.add_item(title)
+        Args:
+            item: The item to save.
+        """
+        return self.trello_repository.update_item(item)
 
+    def remove_item_by_id(self, item_id):
+        """
+        Remove an existing item. If no existing item matches the ID of the specified item, nothing is removed.
 
-def save_item(item: Item):
-    """
-    Updates an existing item. If no existing item matches the ID of the specified item, nothing is saved.
-
-    Args:
-        item: The item to save.
-    """
-    return trello_repository.update_item(item)
-
-
-def remove_item_by_id(item_id):
-    """
-    Remove an existing item. If no existing item matches the ID of the specified item, nothing is removed.
-
-    Args:
-        item: The item to remove.
-    """
-    return trello_repository.remove_item(item_id)
+        Args:
+            item: The item to remove.
+        """
+        return self.trello_repository.remove_item(item_id)
