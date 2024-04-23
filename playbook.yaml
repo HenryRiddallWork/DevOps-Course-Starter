@@ -1,0 +1,92 @@
+- name: Install ToDo App on new web servers
+  hosts: webservers
+  remote_user: ec2-user
+  vars_prompt:
+    - name: TRELLO_API_KEY
+      prompt: What is your Trello API key?
+      private: false
+
+    - name: TRELLO_API_TOKEN
+      prompt: What is your Trello API token?
+      private: false
+
+    - name: TRELLO_BOARD_ID
+      prompt: What is your Trello Board ID?
+      private: false
+
+  tasks:
+    - name: Install git
+      yum:
+        name: git
+        state: present
+      become: yes
+
+    - name: Install python
+      yum:
+        name: python3
+        state: present
+      become: yes
+
+    - name: Install node
+      yum:
+        name: nodejs
+        state: present
+      become: yes
+
+    - name: Install poetry
+      shell: curl -sSL https://install.python-poetry.org | python3 -
+      args:
+        creates: /home/ec2-user/.local/bin/poetry
+
+    - name: Create app folder
+      file:
+        path: /opt/todoapp
+        state: directory
+        mode: "777"
+      become: yes
+
+    - name: Checkout repo
+      git:
+        repo: https://github.com/HenryRiddallWork/DevOps-Course-Starter.git
+        dest: /opt/todoapp/
+        version: module_4
+        force: yes
+      become: yes
+
+    - name: Install poetry dependencies
+      shell: /home/ec2-user/.local/bin/poetry install
+      args:
+        chdir: /opt/todoapp
+
+    - name: Install npm dependencies
+      shell: /usr/bin/npm install
+      args:
+        chdir: /opt/todoapp
+      become: yes
+
+    - name: Build css
+      shell: /usr/bin/npx tailwindcss -i ./todo_app/tailwind.css -o ./todo_app/static/css/index.css
+      args:
+        chdir: /opt/todoapp
+      become: yes
+
+    - name: Construct .env from template
+      template:
+        src: .env.j2
+        dest: /opt/todoapp/.env
+        mode: "777"
+      become: yes
+
+    - name: Copy service
+      copy:
+        src: todoapp.service
+        dest: /etc/systemd/system/todoapp.service
+        mode: "777"
+      become: yes
+
+    - name: Make sure todoapp is running
+      systemd_service:
+        state: restarted
+        name: todoapp
+        daemon_reload: true
+      become: yes
