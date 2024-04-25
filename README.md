@@ -111,3 +111,45 @@ or a specific test can be run using:
 ```bash
 $ poetry run pytest path/to/test_file
 ```
+
+## Ansible
+
+To provision a VM and start the todo app you must first ensure the necissary files are on the control Node either by pulling the entire git repo or copying them over. The necessary files are:
+
+- playbook.yaml
+- inventory.ini
+- .env.j2
+- todoapp.service
+
+**NOTE: You must update the "Checkout repo" task in the playbook.yaml to match the branch on the control node!**
+
+You can add any managed nodes to the inventory.ini file.
+Then, on the control node from the directory these files are in, run the following
+command:
+
+```bash
+$ ansible-playbook playbook.yaml -i inventory.ini
+```
+
+You will then be prompted for some secret details required for the app to run. After you have entered these details you should see an output similar to the following (though likely with all tasks displaying "Changed" rather than "ok"):
+
+```bash
+PLAY [Install ToDo App on new web servers] **************************************************************************************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************************************************************************************************************
+[WARNING]: Platform linux on host 13.43.77.114 is using the discovered Python interpreter at /usr/bin/python3.9, but future installation of another Python interpreter could change the meaning of that path. See https://docs.ansible.com/ansible-
+core/2.15/reference_appendices/interpreter_discovery.html for more information.
+ok: [13.43.77.114]
+
+TASK [Install git] **************************************************************************************************************************************************************************************************************************************************************************************
+ok: [13.43.77.114]
+
+.....
+.....
+.....
+
+PLAY RECAP **********************************************************************************************************************************************************************************************************************************************************************************************
+13.43.77.114               : ok=13   changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
+You should now (or at least within a few seconds) be able to access the app from the IPs within the inventory.ini file on port 8000.
