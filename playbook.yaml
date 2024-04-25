@@ -4,32 +4,23 @@
   vars_prompt:
     - name: TRELLO_API_KEY
       prompt: What is your Trello API key?
-      private: false
+      private: true
 
     - name: TRELLO_API_TOKEN
       prompt: What is your Trello API token?
-      private: false
+      private: true
 
     - name: TRELLO_BOARD_ID
       prompt: What is your Trello Board ID?
-      private: false
+      private: true
 
   tasks:
-    - name: Install git
+    - name: Install git, python and node
       yum:
-        name: git
-        state: present
-      become: yes
-
-    - name: Install python
-      yum:
-        name: python3
-        state: present
-      become: yes
-
-    - name: Install node
-      yum:
-        name: nodejs
+        name:
+          - git
+          - python3
+          - nodejs
         state: present
       become: yes
 
@@ -42,7 +33,7 @@
       file:
         path: /opt/todoapp
         state: directory
-        mode: "777"
+        mode: "0755"
       become: yes
 
     - name: Checkout repo
