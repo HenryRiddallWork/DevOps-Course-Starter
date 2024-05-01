@@ -112,6 +112,40 @@ or a specific test can be run using:
 $ poetry run pytest path/to/test_file
 ```
 
+## Docker containers
+
+It is also possible to run the app using Docker containers. There are two containers maintained in the Dockerfile, a production container and a development container. To build the containers you must first have a valid .env file as described in the instructions above. Then you should run the build command:
+
+### Production
+
+```bash
+docker build --target production --tag todo-app:prod .
+```
+
+### Development
+
+```bash
+docker build --target development --tag todo-app:dev .
+```
+
+Once that has completed you can run the corresponding run command and the app should become visible on the corresponding port:
+
+### Production
+
+This will not pick up on any code changes and the above build step will need to be run again for them to be noticed.
+
+```bash
+docker run -it --env-file ./.env --publish 8000:8000 todo-app:prod
+```
+
+### Development
+
+This supports hot reloading and should pick up on code changes you make.
+
+```bash
+docker run -it --env-file ./.env --publish 5000:5000 --mount "type=bind,source=$(pwd)/todo_app,target=/code/todo_app" todo-app:dev
+```
+
 ## Ansible
 
 To provision a VM and start the todo app you must first ensure the necissary files are on the control Node either by pulling the entire git repo or copying them over. The necessary files are:
