@@ -1,0 +1,7 @@
+.env
+node_modules/
+.venv/
+.vscode/
+.pytest_cache/
+.github/
+todo_app/static/css/index.css
