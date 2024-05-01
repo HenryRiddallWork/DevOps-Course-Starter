@@ -1,7 +1,7 @@
 {
   "scripts": {
     "css": "npx tailwindcss -i ./todo_app/tailwind.css -o ./todo_app/static/css/index.css --watch",
-    "dev": "concurrently \"npm run css\" \"poetry run flask run\""
+    "dev": "concurrently \"npm run css\" \"poetry run flask run --host=0.0.0.0\""
   },
   "devDependencies": {
     "prettier": "^3.2.5",

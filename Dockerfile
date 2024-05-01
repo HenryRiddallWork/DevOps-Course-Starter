@@ -1,4 +1,5 @@
-FROM python:slim-bookworm
+FROM python:slim-bookworm as base
+
 EXPOSE 8000
 RUN apt-get update && apt-get install -y \
     curl \
@@ -17,9 +18,13 @@ COPY /tailwind.config.js /code
 RUN poetry install
 RUN npm install
 
-COPY /todo_app/tailwind.css /code/todo_app/
-RUN npx tailwindcss -i ./todo_app/tailwind.css -o ./todo_app/static/css/index.css
+FROM base as production
 
 COPY /todo_app /code/todo_app
+RUN npx tailwindcss -i ./todo_app/tailwind.css -o ./todo_app/static/css/index.css
 
 CMD poetry run gunicorn -w=4 --bind 0.0.0.0 "todo_app.app:create_app()"
+
+FROM base as development
+
+CMD npm run dev
