@@ -114,37 +114,29 @@ $ poetry run pytest path/to/test_file
 
 ## Docker containers
 
-It is also possible to run the app using Docker containers. There are two containers maintained in the Dockerfile, a production container and a development container. To build the containers you must first have a valid .env file as described in the instructions above. Then you should run the build command:
+It is also possible to run the app using Docker containers. There are two containers maintained in the Dockerfile, a production container and a development container. Both of which have corresponding services in the docker-compose.yml file making starting these containers easier for developers.
 
-### Production
+#### Production
 
-```bash
-docker build --target production --tag todo-app:prod .
-```
-
-### Development
+The production container uses Gunicorn as the WSGI server providing a production ready experience. You can start this container with:
 
 ```bash
-docker build --target development --tag todo-app:dev .
+docker compose up prod
 ```
 
-Once that has completed you can run the corresponding run command and the app should become visible on the corresponding port:
+Once the container is built and completes startup the application should be available on port 8000.
 
-### Production
+#### Development
 
-This will not pick up on any code changes and the above build step will need to be run again for them to be noticed.
+The development container uses flasks built in WSGI which shouldn't be used in production but combined with the bind-mount on the `./todo_app` directory allows hot reloading to pick up code changes immediately. This container can be started using:
 
 ```bash
-docker run -it --env-file ./.env --publish 8000:8000 todo-app:prod
+docker compose up dev
 ```
 
-### Development
+Once the container is built and completes startup the application should be available on port 5000 and any changes to the code should be visible on refresh (This does not apply to package changes which require the container to be rebuilt).
 
-This supports hot reloading and should pick up on code changes you make.
-
-```bash
-docker run -it --env-file ./.env --publish 5000:5000 --mount "type=bind,source=$(pwd)/todo_app,target=/code/todo_app" todo-app:dev
-```
+NOTE: The pull policy on both services are set to build. This acts like adding the --build option to the compose command and as such the image is rebuilt every time. At the moment this isn't very costly as the containers are quite small, but this decision may be worth revisiting in future if more complexity is added!
 
 ## Ansible
 
