@@ -1,7 +1,7 @@
-FROM python:slim-bookworm as base
+FROM python:alpine as base
 
 EXPOSE 8000
-RUN apt-get update && apt-get install -y \
+RUN apk add --no-cache \
     curl \
     npm \
     nodejs
