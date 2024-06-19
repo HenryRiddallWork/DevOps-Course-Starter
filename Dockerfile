@@ -9,11 +9,8 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="/root/.local/bin:$PATH"
 
 WORKDIR /code
-COPY /package.json /code
-COPY /package-lock.json /code
-COPY /poetry.toml /code
-COPY /poetry.lock /code
-COPY /pyproject.toml /code
+COPY /package.json /package-lock.json /code/
+COPY /poetry.toml /poetry.lock /pyproject.toml /code/
 COPY /tailwind.config.js /code
 RUN poetry install
 RUN npm install
