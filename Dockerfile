@@ -20,8 +20,8 @@ FROM base as production
 COPY /todo_app /code/todo_app
 RUN npx tailwindcss -i ./todo_app/tailwind.css -o ./todo_app/static/css/index.css
 
-CMD poetry run gunicorn -w=4 --bind 0.0.0.0 "todo_app.app:create_app()"
+ENTRYPOINT poetry run gunicorn -w=4 --bind 0.0.0.0 "todo_app.app:create_app()"
 
 FROM base as development
 
-CMD npm run dev
+ENTRYPOINT npm run dev
