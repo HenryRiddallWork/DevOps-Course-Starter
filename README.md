@@ -112,6 +112,32 @@ or a specific test can be run using:
 $ poetry run pytest path/to/test_file
 ```
 
+## Docker containers
+
+It is also possible to run the app using Docker containers. There are two containers maintained in the Dockerfile, a production container and a development container. Both of which have corresponding services in the docker-compose.yml file making starting these containers easier for developers.
+
+#### Production
+
+The production container uses Gunicorn as the WSGI server providing a production ready experience. You can start this container with:
+
+```bash
+docker compose up prod
+```
+
+Once the container is built and completes startup the application should be available on port 8000.
+
+#### Development
+
+The development container uses flasks built in WSGI which shouldn't be used in production but combined with the bind-mount on the `./todo_app` directory allows hot reloading to pick up code changes immediately. This container can be started using:
+
+```bash
+docker compose up dev
+```
+
+Once the container is built and completes startup the application should be available on port 5000 and any changes to the code should be visible on refresh (This does not apply to package changes which require the container to be rebuilt).
+
+NOTE: The pull policy on both services are set to build. This acts like adding the --build option to the compose command and as such the image is rebuilt every time. At the moment this isn't very costly as the containers are quite small, but this decision may be worth revisiting in future if more complexity is added!
+
 ## Ansible
 
 To provision a VM and start the todo app you must first ensure the necissary files are on the control Node either by pulling the entire git repo or copying them over. The necessary files are:
