@@ -5,3 +5,4 @@ node_modules/
 .pytest_cache/
 .github/
 todo_app/static/css/index.css
+**/__pycache__
