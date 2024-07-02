@@ -18,6 +18,7 @@ def test_completed_items_property_contains_exactly_the_completed_items():
     completed_items = index_model.completed_items
 
     assert set(completed_items) == set([completed_item_1, completed_item_2])
+    assert False
 
 
 def test_todo_items_property_contains_exactly_the_todo_items():
