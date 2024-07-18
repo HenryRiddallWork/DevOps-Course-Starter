@@ -15,13 +15,17 @@ COPY /tailwind.config.js /code
 RUN poetry install
 RUN npm install
 
-FROM base as production
+FROM base as test
 
-COPY /todo_app /code/todo_app
-RUN npx tailwindcss -i ./todo_app/tailwind.css -o ./todo_app/static/css/index.css
-
-ENTRYPOINT poetry run gunicorn -w=4 --bind 0.0.0.0 "todo_app.app:create_app()"
+COPY / /code
+ENTRYPOINT poetry run pytest
 
 FROM base as development
 
 ENTRYPOINT npm run dev
+
+FROM base as production
+
+COPY /todo_app /code/todo_app
+RUN npx tailwindcss -i ./todo_app/tailwind.css -o ./todo_app/static/css/index.css
+ENTRYPOINT poetry run gunicorn -w=4 --bind 0.0.0.0 "todo_app.app:create_app()"

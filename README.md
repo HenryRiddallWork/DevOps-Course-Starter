@@ -136,7 +136,17 @@ docker compose up dev
 
 Once the container is built and completes startup the application should be available on port 5000 and any changes to the code should be visible on refresh (This does not apply to package changes which require the container to be rebuilt).
 
-NOTE: The pull policy on both services are set to build. This acts like adding the --build option to the compose command and as such the image is rebuilt every time. At the moment this isn't very costly as the containers are quite small, but this decision may be worth revisiting in future if more complexity is added!
+#### Test
+
+The test container will automatically run all the unit/integration tests
+
+```bash
+docker compose up test
+```
+
+Once the container is built it will run the tests and display the results in the console.
+
+NOTE: The pull policy on all services are set to build. This acts like adding the --build option to the compose command and as such the image is rebuilt every time. At the moment this isn't very costly as the containers are quite small, but this decision may be worth revisiting in future if more complexity is added!
 
 ## Ansible
 
