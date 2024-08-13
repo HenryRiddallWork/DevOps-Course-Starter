@@ -1,6 +1,6 @@
 FROM python:alpine as base
 
-EXPOSE 8000
+EXPOSE 8080
 RUN apk add --no-cache \
     curl \
     npm \
@@ -15,17 +15,17 @@ COPY /tailwind.config.js /code
 RUN poetry install
 RUN npm install
 
-FROM base as test
+FROM base AS test
 
 COPY / /code
 ENTRYPOINT poetry run pytest
 
-FROM base as development
+FROM base AS development
 
 ENTRYPOINT npm run dev
 
-FROM base as production
+FROM base AS production
 
 COPY /todo_app /code/todo_app
 RUN npx tailwindcss -i ./todo_app/tailwind.css -o ./todo_app/static/css/index.css
-ENTRYPOINT poetry run gunicorn -w=4 --bind 0.0.0.0 "todo_app.app:create_app()"
+ENTRYPOINT poetry run gunicorn -w=4 --bind 0.0.0.0:8080 "todo_app.app:create_app()"
