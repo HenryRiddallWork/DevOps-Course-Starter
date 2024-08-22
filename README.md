@@ -2,6 +2,44 @@
 
 > If you are using GitPod for the project exercise (i.e. you cannot use your local machine) then you'll want to launch a VM using the [following link](https://gitpod.io/#https://github.com/CorndelWithSoftwire/DevOps-Course-Starter). Note this VM comes pre-setup with Python & Poetry pre-installed.
 
+## Deployment
+
+There is a live deployment of this site being hosted on Microsoft Azure which can be found [here](https://todo-web-app-henry-riddall.azurewebsites.net/). This uses a docker image hosted on docker hub [here](https://hub.docker.com/r/henryriddall1/azure_production_build/tags).
+
+### Manual Deployment Process
+
+Before you begin you will need to have installed the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
+
+- Push the latest version of the docker image to docker hub by running:
+
+```bash
+docker login
+docker build --target production --tag {{YOUR_USERNAME}}/azure_production_build:prod .
+docker push {{YOUR_USERNAME}}/azure_production_build:prod
+```
+
+- If an app service does not yet exist you will need to create one by running:
+
+```bash
+az appservice plan create --resource-group {{YOUR_RESCOURCE_GROUP}} -n {{APPROPRIATE_SERVICE_NAME}} --sku B1 --is-linux
+```
+
+- Then you can create the webapp itself by running:
+
+```bash
+az webapp create --resource-group {{YOUR_RESCOURCE_GROUP}} --plan {{APPROPRIATE_SERVICE_NAME}} --name {{APPROPRIATE_APP_NAME}} --deployment-container-image-name docker.io/{{YOUR_USERNAME}}/azure_production_build:prod
+```
+
+### Updating a deployment
+
+If you have alrady deployed the webapp you can update the deployment by pushing an updated docker build (see step 1 from above), then running:
+
+```bash
+curl -v -X POST '{{WEBHOOK}}'
+```
+
+in a bash terminal where {{WEBHOOK}} is found in the Deployment Center tab on your app service's page in Azure Portal.
+
 ## System Requirements
 
 The project uses poetry for Python to create an isolated environment and manage package dependencies. To prepare your system, ensure you have an official distribution of Python version 3.8+ and install Poetry using one of the following commands (as instructed by the [poetry documentation](https://python-poetry.org/docs/#system-requirements)):
@@ -124,7 +162,7 @@ The production container uses Gunicorn as the WSGI server providing a production
 docker compose up prod
 ```
 
-Once the container is built and completes startup the application should be available on port 8000.
+Once the container is built and completes startup the application should be available on port 8080.
 
 #### Development
 
@@ -188,4 +226,4 @@ PLAY RECAP *********************************************************************
 13.43.77.114               : ok=13   changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-You should now (or at least within a few seconds) be able to access the app from the IPs within the inventory.ini file on port 8000.
+You should now (or at least within a few seconds) be able to access the app from the IPs within the inventory.ini file on port 8080.
