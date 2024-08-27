@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        continue-on-error: true
       - run: docker build -t test --target test .
       - run: docker run test
   publish:
@@ -19,6 +21,8 @@ jobs:
     needs: build
     if: ${{ github.ref == 'refs/heads/module_9' && github.event_name == 'push' }}
     steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -30,4 +34,6 @@ jobs:
           push: true
           target: production
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/azure_production_build:prod
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - run: curl -dfH -X POST '${{ secrets.AZURE_WEBHOOK }}'
