@@ -30,3 +30,4 @@ jobs:
           push: true
           target: production
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/azure_production_build:prod
+      - run: curl -dfH -X POST '${{ secrets.AZURE_WEBHOOK }}'
