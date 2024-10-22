@@ -1,5 +1,4 @@
 from enum import Enum
-from todo_app.data.models.trello_objects import TrelloList
 
 
 class Status(Enum):
