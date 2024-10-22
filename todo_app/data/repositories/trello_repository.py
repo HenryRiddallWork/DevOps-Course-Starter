@@ -3,9 +3,10 @@ import os
 
 from todo_app.data.models.item import Item, Status
 from todo_app.data.models.trello_objects import TrelloList
+from todo_app.data.repositories.base_items_repository import BaseItemsRepository
 
 
-class TrelloRepository:
+class TrelloRepository(BaseItemsRepository):
     def __init__(self):
         self.headers = {"Accept": "application/json"}
         self.base_query_params = {
@@ -59,7 +60,7 @@ class TrelloRepository:
 
         return next((list for list in self.lists_cache.values() if list.name == name))
 
-    def get_board_items(self) -> list[Item]:
+    def get_all_items(self) -> list[Item]:
         response = requests.get(
             f"{self.board_url}/cards", params=self.base_query_params
         )
