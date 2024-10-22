@@ -13,6 +13,8 @@ types-requests = "^2.31.0.20240218"
 types-flask = "^1.1.6"
 pytest = "^8.1.1"
 gunicorn = "^22.0.0"
+pymongo = "^4.10.1"
+mongomock = "^4.2.0.post1"
 
 [tool.poetry.dev-dependencies]
 

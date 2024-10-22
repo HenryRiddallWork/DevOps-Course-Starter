@@ -25,7 +25,7 @@ block content %}
       {% for item in view_model.items %}
       <div
         style="--animation-order: {{loop.index}};"
-        class="nthDelay animate-jump relative flex min-h-32 w-48 flex-col rounded bg-slate-300 shadow-lg"
+        class="nthDelay relative flex min-h-32 w-48 animate-jump flex-col rounded bg-slate-300 shadow-lg"
       >
         <div class="flex justify-end gap-2 rounded-t bg-slate-800 px-2 py-2">
           <form
@@ -33,11 +33,16 @@ block content %}
             action="{{ url_for('comeplete_todo_item') }}"
             method="post"
           >
+            <input type="hidden" name="item_id" value="{{ item.id }}" />
+            <input type="hidden" name="item_title" value="{{ item.title }}" />
+            <input
+              type="hidden"
+              name="item_status"
+              value="{{ item.status.value }}"
+            />
             <button
               class="{% if item.is_complete %}bg-yellow-600{% else %}bg-emerald-600{% endif %} size-5 rounded font-mono text-sm font-bold text-white transition-all duration-200 ease-in-out hover:scale-125"
               type="submit"
-              name="item_id"
-              value="{{ item.id }}"
               aria-label="complete-{{ item.title }}"
               on
             >
