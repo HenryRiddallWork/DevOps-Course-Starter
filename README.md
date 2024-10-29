@@ -227,3 +227,9 @@ PLAY RECAP *********************************************************************
 ```
 
 You should now (or at least within a few seconds) be able to access the app from the IPs within the inventory.ini file on port 8080.
+
+## Security
+
+### Encryption at rest
+
+We are using Azure Cosmos DB and therefore all data is encrypted using AES-256 encryption as this is the default for that service.
