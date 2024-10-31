@@ -4,7 +4,6 @@ from todo_app.data.repositories.base_items_repository import BaseItemsRepository
 
 class BaseItemsService:
     def __init__(self, repository: BaseItemsRepository):
-        pass
         self.repository = repository
 
     def get_items(self) -> list[Item]:
