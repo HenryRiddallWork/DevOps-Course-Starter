@@ -9,7 +9,7 @@ class MongoRepository(BaseItemsRepository):
     def __init__(self):
         self.client = pymongo.MongoClient(os.getenv("MONGO_CONNECTION_STRING"))
         self.database = self.client[os.getenv("MONGO_DB_NAME")]
-        self.collection = self.database[os.getenv("MONBGO_DB_COLLECTION")]
+        self.collection = self.database[os.getenv("MONGO_DB_COLLECTION")]
 
     def get_all_items(self) -> list[Item]:
         return [

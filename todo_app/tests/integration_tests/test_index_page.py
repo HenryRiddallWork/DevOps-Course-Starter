@@ -12,7 +12,7 @@ def test_index_page(monkeypatch, client):
 
     # Insert fake card
     test = pymongo.MongoClient(os.getenv("MONGO_CONNECTION_STRING"))
-    test[os.getenv("MONGO_DB_NAME")][os.getenv("MONBGO_DB_COLLECTION")].insert_one(
+    test[os.getenv("MONGO_DB_NAME")][os.getenv("MONGO_DB_COLLECTION")].insert_one(
         {"title": "Test card", "status": Status.ToDo.value}
     )
 
