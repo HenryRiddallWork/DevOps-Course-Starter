@@ -28,19 +28,16 @@ def create_app():
         mongoItemsService.remove_item_by_id(request.form.get("item_id"))
         return redirect("/")
 
-    @app.route("/complete", methods=["POST"])
-    def comeplete_todo_item():
+    @app.route("/toggle", methods=["POST"])
+    def toggle_todo_item_status():
         current_item = Item(
             request.form.get("item_id"),
             request.form.get("item_title"),
             Status[request.form.get("item_status")],
         )
-        print(current_item.status.value)
-        current_item.status = (
-            Status.ToDo if current_item.status == Status.Completed else Status.Completed
-        )
-        print(current_item.status.value)
-        mongoItemsService.save_item(current_item)
+
+        mongoItemsService.toggle_item_status(current_item)
+
         return redirect("/")
 
     return app

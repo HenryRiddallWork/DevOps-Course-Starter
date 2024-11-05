@@ -1,4 +1,4 @@
-from todo_app.data.models.item import Item
+from todo_app.data.models.item import Item, Status
 from todo_app.data.repositories.base_items_repository import BaseItemsRepository
 
 
@@ -27,13 +27,17 @@ class BaseItemsService:
         """
         return self.repository.add_item(title)
 
-    def save_item(self, item: Item):
+    def toggle_item_status(self, item: Item):
         """
-        Updates an existing item. If no existing item matches the ID of the specified item, nothing is saved.
+        Toggles an existing item between the two possible statuses.
 
         Args:
-            item: The item to save.
+            item: The item to toggle.
         """
+        item.status = (
+            Status.ToDo if item.status == Status.Completed else Status.Completed
+        )
+
         return self.repository.update_item(item)
 
     def remove_item_by_id(self, item_id):
