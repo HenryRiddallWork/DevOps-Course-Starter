@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from todo_app.data.models.item import Item, Status
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from todo_app.data.services.mongo_items_service import MongoItemsService
 from todo_app.flask_config import Config
@@ -10,6 +11,7 @@ from todo_app.oauth import blueprint, login_required
 def create_app():
     app = Flask(__name__, static_url_path="/static")
     app.config.from_object(Config())
+    app.wsgi_app = ProxyFix(app.wsgi_app)
     mongoItemsService = MongoItemsService()
 
     app.register_blueprint(blueprint, url_prefix="/login")
