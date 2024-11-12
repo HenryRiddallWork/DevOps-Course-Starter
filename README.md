@@ -136,6 +136,8 @@ $[1] 127.0.0.1 - - [05/Apr/2024 16:49:39] "GET /static/css/index.css HTTP/1.1" 2
 
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
+Note: If you are getting "Insecure Transport Error" errors you can add: `OAUTHLIB_INSECURE_TRANSPORT=1` to your .env file for local dev.
+
 ## Testing
 
 Unit tests & integration tests are implemented using [pytest](https://docs.pytest.org/). The full suite of tests can be run using:
@@ -227,3 +229,9 @@ PLAY RECAP *********************************************************************
 ```
 
 You should now (or at least within a few seconds) be able to access the app from the IPs within the inventory.ini file on port 8080.
+
+## Security
+
+### Encryption at rest
+
+We are using Azure Cosmos DB and therefore all data is encrypted using AES-256 encryption as this is the default for that service.
