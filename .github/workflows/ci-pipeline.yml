@@ -43,6 +43,7 @@ jobs:
     if: ${{ github.event_name == 'push' }}
     steps:
       - uses: actions/checkout@v4
+      - run: az login
       - run: terraform init
       - run: terraform apply -auto-approve -var 'prefix=test' -var 'oauth_client_id=${{ secrets.OAUTH_CLIENT_ID }}' -var 'oauth_client_secret=${{ secrets.OAUTH_CLIENT_SECRET }}'
       - run: curl -dH -X POST "$(terraform output -raw webhook_url)"
