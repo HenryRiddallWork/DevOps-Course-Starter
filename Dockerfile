@@ -12,7 +12,7 @@ WORKDIR /code
 COPY /package.json /package-lock.json /code/
 COPY /poetry.toml /poetry.lock /pyproject.toml /code/
 COPY /tailwind.config.js /code
-RUN poetry install
+RUN poetry install --no-root
 RUN npm install
 
 FROM base AS test

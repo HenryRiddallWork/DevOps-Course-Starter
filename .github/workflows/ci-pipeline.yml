@@ -5,6 +5,12 @@ on:
   pull_request:
     paths-ignore: "README.md"
 
+env:
+  ARM_CLIENT_ID: "${{ secrets.ARM_CLIENT_ID }}"
+  ARM_SUBSCRIPTION_ID: "${{ secrets.ARM_SUBSCRIPTION_ID }}"
+  ARM_TENANT_ID: "${{ secrets.ARM_TENANT_ID }}"
+  ARM_CLIENT_SECRET: "${{ secrets.ARM_CLIENT_SECRET }}"
+
 jobs:
   build:
     name: Build and test
@@ -36,4 +42,17 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/azure_production_build:prod
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - run: curl -dfH -X POST '${{ secrets.AZURE_WEBHOOK }}'
+  terraform:
+    name: Run terraform
+    runs-on: ubuntu-latest
+    needs: publish
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+      - run: terraform init
+      - run: terraform apply -auto-approve -var 'prefix=test' -var 'oauth_client_id=${{ secrets.OAUTH_CLIENT_ID }}' -var 'oauth_client_secret=${{ secrets.OAUTH_CLIENT_SECRET }}'
+      - run: curl -dH -X POST "$(terraform output -raw webhook_url)"
