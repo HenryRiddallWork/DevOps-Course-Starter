@@ -9,14 +9,18 @@ blueprint = make_github_blueprint(
 )
 
 from functools import wraps
-from flask import g, request, redirect, url_for
+from flask import Flask, g, request, redirect, url_for
 
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not github.authorized:
-            return redirect(url_for("github.login"))
-        return f(*args, **kwargs)
+def login_required(app: Flask):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if not github.authorized:
+                app.logger.info("Redirecting user to login")
+                return redirect(url_for("github.login"))
+            return f(*args, **kwargs)
 
-    return decorated_function
+        return decorated_function
+
+    return decorator

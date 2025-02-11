@@ -11,13 +11,14 @@ from todo_app.oauth import blueprint, login_required
 def create_app():
     app = Flask(__name__, static_url_path="/static")
     app.config.from_object(Config())
+    app.logger.setLevel(app.config["LOG_LEVEL"])
     app.wsgi_app = ProxyFix(app.wsgi_app)
-    mongoItemsService = MongoItemsService()
+    mongoItemsService = MongoItemsService(app)
 
     app.register_blueprint(blueprint, url_prefix="/login")
 
     @app.route("/")
-    @login_required
+    @login_required(app)
     def index():
         items = mongoItemsService.get_items()
         sorted_items = sorted(items, key=lambda item: item.id)
@@ -25,19 +26,19 @@ def create_app():
         return render_template("/index.html", view_model=item_view_model)
 
     @app.route("/", methods=["POST"])
-    @login_required
+    @login_required(app)
     def add_todo_item():
         mongoItemsService.add_item(request.form.get("title"))
         return redirect("/")
 
     @app.route("/delete", methods=["POST"])
-    @login_required
+    @login_required(app)
     def remove_todo_item():
         mongoItemsService.remove_item_by_id(request.form.get("item_id"))
         return redirect("/")
 
     @app.route("/toggle", methods=["POST"])
-    @login_required
+    @login_required(app)
     def toggle_todo_item_status():
         current_item = Item(
             request.form.get("item_id"),
