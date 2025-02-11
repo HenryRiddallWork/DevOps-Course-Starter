@@ -16,6 +16,7 @@ gunicorn = "^22.0.0"
 pymongo = "^4.10.1"
 mongomock = "^4.2.0.post1"
 flask-dance = "^7.1.0"
+loggly-python-handler = "^1.0.1"
 
 [tool.poetry.dev-dependencies]
 
