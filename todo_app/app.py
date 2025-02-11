@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, redirect
 from todo_app.data.models.item import Item, Status
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -6,12 +7,22 @@ from todo_app.data.services.mongo_items_service import MongoItemsService
 from todo_app.flask_config import Config
 from todo_app.models.index_model import IndexModel
 from todo_app.oauth import blueprint, login_required
+from loggly.handlers import HTTPSHandler
+from logging import Formatter
 
 
 def create_app():
     app = Flask(__name__, static_url_path="/static")
     app.config.from_object(Config())
-    app.logger.setLevel(app.config["LOG_LEVEL"])
+    app.logger.setLevel(os.getenv("LOG_LEVEL"))
+    if os.getenv("LOGGLY_TOKEN") is not None:
+        handler = HTTPSHandler(
+            f'https://logs-01.loggly.com/inputs/{os.getenv("LOGGLY_TOKEN")}/tag/todo-app'
+        )
+        handler.setFormatter(
+            Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s")
+        )
+        app.logger.addHandler(handler)
     app.wsgi_app = ProxyFix(app.wsgi_app)
     mongoItemsService = MongoItemsService(app)
 
