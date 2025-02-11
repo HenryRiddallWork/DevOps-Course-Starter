@@ -86,3 +86,19 @@ The Terraform plan is set up to allow a prefix for the resources and thus it sho
 ### Encryption at rest
 
 We are using Azure Cosmos DB and therefore all data is encrypted using AES-256 encryption as this is the default for that service.
+
+## Kubernetes
+
+It is possible to run the application locally using a Minikube kubernetes cluster. Make sure you have installed the following before beggining: [Docker](https://docs.docker.com/desktop/setup/install/windows-install/), [Kubectl](https://kubernetes.io/docs/tasks/tools/) and [minikube](https://minikube.sigs.k8s.io/docs/start/?arch=%2Fwindows%2Fx86-64%2Fstable%2F.exe+download). Once you have installed these complete the following steps:
+
+- Start minikube by running: `minikube start`
+- Build the docker image by running: `docker build --target production --tag todo-app:prod .`
+- Create the environment secret by running the following command, making sure to replace the secret values (the ones inside double curly braces) with your real secrets:
+
+```bash
+kubectl create secret generic environment-secret --from-literal=FLASK_APP='todo_app/app' --from-literal=SECRET_KEY='{{ SECRET_KEY }}' --from-literal=PREFERRED_URL_SCHEME='https' --from-literal=MONGO_CONNECTION_STRING='{{ MONGO_CONNECTION_STRING }}' --from-literal=MONGO_DB_NAME='todo_db' --from-literal=MONGO_DB_COLLECTION='todo_items' --from-literal=OAUTH_CLIENT_ID='{{ OAUTH_CLIENT_ID }}' --from-literal=OAUTH_CLIENT_SECRET='{{ OAUTH_CLIENT_SECRET }}' --from-literal=OAUTHLIB_INSECURE_TRANSPORT='1' --from-literal=LOG_LEVEL='DEBUG' --from-literal=LOGGLY_TOKEN='{{ LOGGLY_TOKEN }}'
+```
+
+- Then to deploy the pod run: `kubectl apply -f deployment.yaml` AND `kubectl apply -f service.yaml`
+- Finally to link the minikube service up with a port on localhost run: `kubectl port-forward service/module-14 7080:8080`
+- You should now be able to access the app at: http://localhost:7080/
